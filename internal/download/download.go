@@ -272,7 +272,6 @@ func DownloadFile(url, dest string, progressFn func(downloaded, total int64)) er
 
 // CopyFile copies a file from src to dst using streaming I/O
 func CopyFile(src, dst string) error {
-
 	srcFile, err := os.Open(src)
 	if err != nil {
 		return fmt.Errorf("failed to open source file: %w", err)
@@ -283,7 +282,13 @@ func CopyFile(src, dst string) error {
 	if err != nil {
 		return fmt.Errorf("failed to create destination file: %w", err)
 	}
-	defer dstFile.Close()
+
+	// Handle close error explicitly to prevent data loss
+	defer func() {
+		if cerr := dstFile.Close(); cerr != nil && err == nil {
+			err = fmt.Errorf("failed to close destination file: %w", cerr)
+		}
+	}()
 
 	if _, err := io.Copy(dstFile, srcFile); err != nil {
 		return fmt.Errorf("failed to copy file: %w", err)

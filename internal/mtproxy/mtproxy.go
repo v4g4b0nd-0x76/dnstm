@@ -18,11 +18,11 @@ import (
 )
 
 const (
-	MTProxyBinaryName    = "mtproto-proxy"
-	MTProxyServiceName   = "mtproxy"
-	MTProxyBridgeService = "mtproxy-bridge"
-	MTProxyBindAddr      = "127.0.0.1"
-	MTProxyPort          = "8443"
+	MTProxyBinaryName      = "mtproto-proxy"
+	MTProxyServiceName     = "mtproxy"
+	MTProxyBridgeService   = "mtproxy-bridge"
+	MTProxyBindAddr        = "127.0.0.1"
+	MTProxyPort            = "8443"
 	MTProxyStatsPort       = "8888"
 	MTProxyInstallationDir = "/usr/local/bin"
 	MTProxyConfigDir       = "/etc/mtproxy"
@@ -57,7 +57,7 @@ func InstallMTProxy(progressFn func(downloaded, total int64)) error {
 
 		tmpFile := filepath.Join(tmpDir, "objs/bin/mtproto-proxy")
 
-		// there is no release in neither official nor community repo, so we build from source
+		// there is no release in either the official or community repo, so we build from source
 		if err := buildFromSource(progressFn, tmpDir); err != nil {
 			return fmt.Errorf("failed to build MTProxy from source: %w", err)
 		}
